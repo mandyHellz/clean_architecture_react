@@ -3,10 +3,13 @@ import { render, screen } from '@testing-library/react'
 import Login from './login'
 
 describe('Login Component', () => {
-  test('Should not render spinner and error message on start', () => {
+  test('Should start with initial state', () => {
     render(<Login/>)
-    const errorWrap = screen.getByTestId('error-wrap')
 
+    const errorWrap = screen.getByTestId('error-wrap')
     expect(errorWrap.childElementCount).toBe(0)
+
+    const submitButton = screen.getByTestId('submit-button')
+    expect(submitButton).toBeDisabled()
   })
 })
