@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import Login from './login'
 
 describe('Login Component', () => {
-  test('', () => {
+  test('Should not render spinner and error message on start', () => {
     render(<Login/>)
     const errorWrap = screen.getByTestId('error-wrap')
 
