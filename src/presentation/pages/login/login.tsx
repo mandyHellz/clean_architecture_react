@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Footer, FormStatus, HeaderLogin, Input } from '@/presentation/components'
+import FormContext from '@/presentation/context/form/form-context'
 import styles from './login-styles.scss'
 
+type StateProps = {
+  isLoading: boolean
+  errorMessage: string
+}
+
 const Login: React.FC = () => {
+  const [state] = useState<StateProps>({
+    isLoading: false,
+    errorMessage: ''
+  })
+
   return (
     <div className={styles.login}>
        <HeaderLogin />
 
+      <FormContext.Provider value={state}>
        <form className={styles.form} action="">
         <h2>Login</h2>
 
@@ -18,6 +30,7 @@ const Login: React.FC = () => {
 
         <FormStatus />
        </form>
+      </FormContext.Provider>
 
        <Footer />
     </div>
