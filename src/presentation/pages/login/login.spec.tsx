@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
 import { faker } from '@faker-js/faker'
 import { render, RenderResult, screen, fireEvent, waitFor } from '@testing-library/react'
 import Login from './login'
@@ -19,13 +20,23 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
   validationStub.errorMessage = params?.validationError
-  const sut = render(<Login validation={validationStub} authentication={authenticationSpy} />)
+  const sut = render(
+    <BrowserRouter>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </BrowserRouter>
+  )
 
   return {
     sut,
     authenticationSpy
   }
 }
+
+const mockedUseNavigate = jest.fn()
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual<any>('react-router-dom'),
+  useNavigate: () => mockedUseNavigate
+}))
 
 const populateEmailField = (email = faker.internet.email()): void => {
   const emailInput = screen.getByTestId('email-input')
@@ -169,5 +180,15 @@ describe('Login Component', () => {
 
     await waitFor(() => screen.getByTestId('form'))
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken)
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/', { replace: true })
+  })
+
+  test('Should go to signup page', () => {
+    makeSut()
+
+    const signup = screen.getByTestId('signup')
+    fireEvent.click(signup)
+
+    expect(mockedUseNavigate).toHaveBeenCalledWith('/signup')
   })
 })
