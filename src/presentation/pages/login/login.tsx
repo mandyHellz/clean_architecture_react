@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Footer, FormStatus, HeaderLogin, Input } from '@/presentation/components'
 import FormContext from '@/presentation/context/form/form-context'
 import styles from './login-styles.scss'
@@ -20,6 +21,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     passwordError: '',
     mainError: ''
   })
+  const navigate = useNavigate()
 
   useEffect(() => {
     setState({
@@ -43,6 +45,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       })
 
       localStorage.setItem('accessToken', account.accessToken)
+      navigate('/', { replace: true })
     } catch (error) {
       setState({
         ...state,
@@ -68,7 +71,13 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         disabled={!!state.emailError || !!state.passwordError}
         className={styles.submit}
         type="submit">Entrar</button>
-        <span className={styles.link}>Criar conta</span>
+        <span
+        data-testid='signup'
+        onClick={() => navigate('/signup')}
+        className={styles.link}
+        >
+          Criar conta
+        </span>
 
         <FormStatus />
        </form>
