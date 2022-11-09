@@ -7,11 +7,11 @@ type SutTypes = {
   fieldValidationsSpy: FieldValidationSpy[]
 }
 
-const makeSut = (fieldName: string, fieldValidationSpy = [
+const makeSut = (fieldName: string, fieldValidationSpyArray = [
   new FieldValidationSpy(fieldName),
   new FieldValidationSpy(fieldName)
 ]): SutTypes => {
-  const fieldValidationsSpy = fieldValidationSpy
+  const fieldValidationsSpy = fieldValidationSpyArray
   const sut = new ValidationComposite(fieldValidationsSpy)
 
   return {
