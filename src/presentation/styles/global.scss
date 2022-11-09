@@ -13,16 +13,23 @@ body {
 }
 
 input[type="password"],
-input[type="email"] {
-    border: 1px solid $primaryLight;
-    line-height: 40px;
-    border-radius: 4px;
-    padding: 0px 40px 0px 8px;
-
-    &:focus {
-        outline-color: $primaryLight;
-    }
+input[type="email"],
+input[type="text"] {
+  border: none;
+  outline: none;
 }
+
+// input[type="email"],
+// input[type="password"] {
+//     border: 1px solid $primaryLight;
+//     line-height: 40px;
+//     border-radius: 4px;
+//     padding: 0px 40px 0px 8px;
+
+//     &:focus {
+//         outline-color: $primaryLight;
+//     }
+// }
 
 button {
     background-color: $primary;
@@ -31,8 +38,19 @@ button {
     border-radius: 8px;
     font-size: 16px;
     border: none;
+    padding: 0px 16px;
+    outline: none;
 
     &:hover {
         opacity: 0.9;
     }
+
+    &:disabled {
+        background-color: $disabledBackground;
+        color: $disabledColor;
+    
+        &:hover {
+          opacity: 1;
+        }
+      }
 }
