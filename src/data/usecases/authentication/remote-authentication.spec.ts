@@ -38,6 +38,7 @@ describe('Remote authentication', () => {
 
     expect(httpPostClientSpy.body).toEqual(autheticationParams)
   })
+
   test('Should call httpPostClient with correct body', async () => {
     const { httpPostClientSpy, sut } = makeSut()
     const autheticationParams = mockAuthetication()
