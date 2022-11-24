@@ -39,14 +39,6 @@ describe('Remote authentication', () => {
     expect(httpPostClientSpy.body).toEqual(autheticationParams)
   })
 
-  test('Should call httpPostClient with correct body', async () => {
-    const { httpPostClientSpy, sut } = makeSut()
-    const autheticationParams = mockAuthetication()
-    await sut.auth(autheticationParams)
-
-    expect(httpPostClientSpy.body).toEqual(autheticationParams)
-  })
-
   test('Should throw invalid credential error if httpPostClient returns 401', async () => {
     const { httpPostClientSpy, sut } = makeSut()
     httpPostClientSpy.response = {
