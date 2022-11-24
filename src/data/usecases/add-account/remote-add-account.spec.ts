@@ -2,7 +2,7 @@ import { RemoteAddAccount } from './remote-add-account'
 import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpPostClientSpy } from '@/data/test'
 import { AddAccountParams } from '@/domain/usecases'
-import { mockAddAccountParams } from '@/domain/test'
+import { mockAccountModel, mockAddAccountParams } from '@/domain/test'
 import { AccountModel } from '@/domain/models'
 import { EmailInUseError, UnexpectedError } from '@/domain/errors'
 import { faker } from '@faker-js/faker'
@@ -64,8 +64,8 @@ describe('RemoteAddAccount', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
-    const promise = sut.add(mockAddAccountParams())
 
+    const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
@@ -74,8 +74,21 @@ describe('RemoteAddAccount', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
-    const promise = sut.add(mockAddAccountParams())
 
+    const promise = sut.add(mockAddAccountParams())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an Account Model if httpPostClient returns 200', async () => {
+    const { httpPostClientSpy, sut } = makeSut()
+    const httpResult = mockAccountModel()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+
+    const account = await sut.add(mockAddAccountParams())
+    await expect(account).toEqual(httpResult)
   })
 })
